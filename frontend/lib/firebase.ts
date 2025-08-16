@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, User } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
 // Check if Firebase config is available
 const hasFirebaseConfig = process.env.NEXT_PUBLIC_FIREBASE_API_KEY && 
@@ -46,6 +47,46 @@ const storage = {
     put: () => Promise.resolve({ ref: { getDownloadURL: () => Promise.resolve('mock-url') } })
   })
 };
+
+// Auth Context
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+}
+
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  loading: true,
+});
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
 export { auth, db, storage, googleProvider };
 export default app; 

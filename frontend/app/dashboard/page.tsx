@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { unstable_noStore as noStore } from 'next/cache';
 import { motion } from 'framer-motion';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { collection, query, where, orderBy, onSnapshot, doc } from 'firebase/firestore';
@@ -36,7 +35,6 @@ interface FileRecord {
 }
 
 export default function DashboardPage() {
-  noStore(); // Disable static generation
   const [user, loading] = useAuthState(auth);
   const [files, setFiles] = useState<FileRecord[]>([]);
   const [uploading, setUploading] = useState(false);
