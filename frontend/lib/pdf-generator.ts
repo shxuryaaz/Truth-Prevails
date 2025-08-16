@@ -48,12 +48,12 @@ export async function generatePDFCertificate(data: CertificateData): Promise<voi
 
   // File Information
   doc.setFontSize(14);
-  doc.setFont(undefined, 'bold');
+  doc.setFont('helvetica', 'bold');
   doc.text('File Information', 30, currentY);
   currentY += 20;
 
   doc.setFontSize(10);
-  doc.setFont(undefined, 'normal');
+  doc.setFont('helvetica', 'normal');
   
   doc.text('File Name:', 30, currentY);
   doc.text(data.fileName, 80, currentY);
@@ -72,12 +72,12 @@ export async function generatePDFCertificate(data: CertificateData): Promise<voi
   // Blockchain Information
   currentY += 10;
   doc.setFontSize(14);
-  doc.setFont(undefined, 'bold');
+  doc.setFont('helvetica', 'bold');
   doc.text('Blockchain Verification', 30, currentY);
   currentY += 20;
 
   doc.setFontSize(10);
-  doc.setFont(undefined, 'normal');
+  doc.setFont('helvetica', 'normal');
   
   doc.text('Wallet Address:', 30, currentY);
   doc.setFontSize(8);
@@ -117,12 +117,12 @@ export async function generatePDFCertificate(data: CertificateData): Promise<voi
   // Add verification status
   currentY += 20;
   doc.setFontSize(14);
-  doc.setFont(undefined, 'bold');
+  doc.setFont('helvetica', 'bold');
   doc.setTextColor(34, 197, 94); // Green color
   doc.text('✓ VERIFIED', 30, currentY);
   
   doc.setFontSize(10);
-  doc.setFont(undefined, 'normal');
+  doc.setFont('helvetica', 'normal');
   doc.setTextColor(107, 114, 128);
   doc.text('This file has been verified and stored on the blockchain', 30, currentY + 10);
 

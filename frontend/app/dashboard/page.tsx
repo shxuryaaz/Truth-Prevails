@@ -149,6 +149,11 @@ export default function DashboardPage() {
           try {
             const userDoc = await import('firebase/firestore').then(f => f.getDoc(f.doc(db, 'users', user.uid)));
             const userData = userDoc.data();
+            
+            if (!userData || !userData.encryptedWallet) {
+              throw new Error('User data or encrypted wallet not found');
+            }
+            
             const walletInfo = blockchainService.decryptWalletInfo(userData.encryptedWallet);
             
             const transactionHash = await blockchainService.submitHash(fileHash, walletInfo.privateKey);
@@ -424,7 +429,7 @@ export default function DashboardPage() {
                               <span className="font-medium">Size:</span> {formatBytes(file.fileSize)}
                             </div>
                             <div>
-                              <span className="font-medium">Uploaded:</span> {formatDate(file.uploadTime)}
+                              <span className="font-medium">Uploaded:</span> {formatDate(new Date(file.uploadTime))}
                             </div>
                             <div>
                               <span className="font-medium">Wallet:</span> {truncateAddress(file.walletAddress)}
