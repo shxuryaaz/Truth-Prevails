@@ -1,24 +1,34 @@
 {
-  "name": "truth-prevails",
+  "name": "truth-prevails-backend",
   "version": "1.0.0",
-  "description": "Secure platform for digital evidence verification using blockchain and AI",
-  "private": true,
-  "workspaces": [
-    "frontend",
-    "backend",
-    "contracts"
-  ],
+  "description": "Backend server for Truth Prevails digital evidence verification platform",
+  "main": "src/index.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "cd backend && npm run dev",
-    "build": "npm run build:frontend && npm run build:backend",
-    "build:frontend": "cd frontend && npm run build",
-    "build:backend": "cd backend && npm run build",
-    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install && cd ../contracts && npm install"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "build": "npm install"
+  },
+  "dependencies": {
+    "bip39": "^3.1.0",
+    "cloudinary": "^1.41.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.9.0",
+    "exifr": "^7.1.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
+    "firebase-admin": "^11.11.1",
+    "hdkey": "^2.1.0",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "nodemon": "^3.0.2"
   },
   "keywords": [
     "blockchain",
@@ -29,4 +39,4 @@
   ],
   "author": "Truth Prevails Team",
   "license": "MIT"
-} 
+}
