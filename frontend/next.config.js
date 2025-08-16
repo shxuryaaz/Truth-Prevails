@@ -36,6 +36,10 @@ const nextConfig = {
     
     return config;
   },
+  experimental: {
+    // Disable static generation for pages with Firebase
+    staticPageGenerationTimeout: 0,
+  },
 }
 
 module.exports = nextConfig 

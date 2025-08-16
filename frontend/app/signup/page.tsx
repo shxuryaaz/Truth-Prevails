@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { unstable_noStore as noStore } from 'next/cache';
 import { motion } from 'framer-motion';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
@@ -15,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 export default function SignupPage() {
+  noStore(); // Disable static generation
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

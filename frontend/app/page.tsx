@@ -1,12 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { unstable_noStore as noStore } from 'next/cache';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield, FileCheck, Zap, CheckCircle, Lock, Network } from 'lucide-react';
 import Link from 'next/link';
 
 export default function HomePage() {
+  noStore(); // Disable static generation
   const features = [
     {
       icon: <Shield className="h-8 w-8 text-blue-600" />,

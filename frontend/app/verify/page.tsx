@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { unstable_noStore as noStore } from 'next/cache';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 import { blockchainService } from '@/lib/blockchain';
@@ -20,6 +21,7 @@ interface VerificationResult {
 }
 
 export default function VerifyPage() {
+  noStore(); // Disable static generation
   const searchParams = useSearchParams();
   const [hash, setHash] = useState('');
   const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);

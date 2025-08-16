@@ -39,7 +39,8 @@
     "styled-jsx": "^5.1.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^3.3.6",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "undici": "^5.29.0"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
