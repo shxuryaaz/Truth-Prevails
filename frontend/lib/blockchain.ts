@@ -2,102 +2,7 @@ import { ethers } from 'ethers';
 import * as bip39 from 'bip39';
 import HDKey from 'hdkey';
 import CryptoJS from 'crypto-js';
-
-// Contract ABI - full ABI from compiled contract
-const CONTRACT_ABI = [
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "hash",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "submitter",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "HashSubmitted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "hash",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "submitter",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "HashVerified",
-    "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_hash",
-        "type": "bytes32"
-      }
-    ],
-    "name": "submitHash",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_hash",
-        "type": "bytes32"
-      }
-    ],
-    "name": "verifyHash",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "exists",
-        "type": "bool"
-      },
-      {
-        "internalType": "address",
-        "name": "submitter",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  }
-];
+import CONTRACT_ABI from '../../src/abis/truthProofABI.json';
 
 export interface WalletInfo {
   address: string;
@@ -107,7 +12,7 @@ export interface WalletInfo {
 
 export class BlockchainService {
   private provider: ethers.JsonRpcProvider;
-  private contract: ethers.Contract;
+  private contract: ethers.Contract | null;
   private encryptionKey: string;
 
   constructor() {
@@ -123,7 +28,7 @@ export class BlockchainService {
       );
     } else {
       console.warn('Contract address not configured. Blockchain features will be disabled.');
-      this.contract = null as any;
+      this.contract = null;
     }
     
     this.encryptionKey = process.env.NEXT_PUBLIC_ENCRYPTION_SECRET || 'default-key';
@@ -177,7 +82,7 @@ export class BlockchainService {
       const wallet = new ethers.Wallet(privateKey, this.provider);
       const contractWithSigner = this.contract.connect(wallet);
       
-      const tx = await contractWithSigner.submitHash(hash);
+      const tx = await (contractWithSigner as any).submitHash(hash);
       const receipt = await tx.wait();
       
       return receipt.hash;
@@ -199,7 +104,7 @@ export class BlockchainService {
     }
     
     try {
-      const result = await this.contract.verifyHash(hash);
+      const result = await (this.contract as any).verifyHash(hash);
       return {
         exists: result[0],
         submitter: result[1],
