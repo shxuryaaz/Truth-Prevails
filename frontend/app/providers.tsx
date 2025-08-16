@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { AuthProvider } from '@/lib/firebase';
+import { AuthProvider } from '@/lib/auth-context';
 
 interface ProvidersProps {
   children: ReactNode;
