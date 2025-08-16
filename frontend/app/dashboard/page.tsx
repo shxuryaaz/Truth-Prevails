@@ -149,6 +149,11 @@ export default function DashboardPage() {
           try {
             const userDoc = await import('firebase/firestore').then(f => f.getDoc(f.doc(db, 'users', user.uid)));
             const userData = userDoc.data();
+            
+            if (!userData || !userData.encryptedWallet) {
+              throw new Error('User data or encrypted wallet not found');
+            }
+            
             const walletInfo = blockchainService.decryptWalletInfo(userData.encryptedWallet);
             
             const transactionHash = await blockchainService.submitHash(fileHash, walletInfo.privateKey);
